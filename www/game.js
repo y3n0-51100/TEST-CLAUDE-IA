@@ -123,7 +123,6 @@
   const SOCIALS = [
     { id: 'instagram', name: 'Instagram', icon: '📸', url: 'https://www.instagram.com/shelfie.game/' }, // ← renseigner l'URL de la page une fois créée
     { id: 'tiktok', name: 'TikTok', icon: '🎵', url: 'https://www.tiktok.com/@shelfie.game' },
-    { id: 'facebook', name: 'Facebook', icon: '👍', url: '' },
   ];
   const bonus = store.get('bonus', { undo: 0, shelf: 0 });
   const claimed = store.get('claimed', {});
