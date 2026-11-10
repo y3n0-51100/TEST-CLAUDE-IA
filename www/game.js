@@ -148,8 +148,12 @@
 
     // Taille des objets adaptée à l'écran et au nombre d'étagères
     const availH = boardEl.clientHeight || 400;
-    // Chaque étagère coûte ~52px (marges + tranche 3D) + l'espacement : on répartit le reste
-    const n = state.length, size = Math.max(30, Math.min(60, Math.floor((availH - 16 - n * 58) / n), Math.floor((Math.min(window.innerWidth, 520) - 32 - 28 - CAP * 8) / CAP)));
+    // Chaque étagère coûte ~58px (marges + tranche 3D). Si ça ne tient pas, mode compact (marges réduites)
+    const n = state.length, maxW = Math.floor((Math.min(window.innerWidth, 520) - 32 - 28 - CAP * 8) / CAP);
+    let overhead = 58;
+    boardEl.classList.remove('is-dense');
+    if ((availH - 16 - n * overhead) / n < 40) { boardEl.classList.add('is-dense'); overhead = 30; }
+    const size = Math.max(26, Math.min(60, Math.floor((availH - 16 - n * overhead) / n), maxW));
     boardEl.style.setProperty('--size', size + 'px');
 
     boardEl.innerHTML = '';
