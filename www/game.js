@@ -120,7 +120,11 @@
   const $ = id => document.getElementById(id);
   const boardEl = $('board');
   let level = store.get('level', 1);
-  let state, history, selected, extraShelfUsed;
+  let state, history, selected, extraShelfUsed, pop = null;
+  const THEMES = ['jelly', 'neon', 'cozy'];
+  const setTheme = t => { document.body.dataset.theme = t; store.set('theme', t); };
+  setTheme(new URLSearchParams(location.search).get('theme') || store.get('theme', 'jelly'));
+  $('theme').onclick = () => setTheme(THEMES[(THEMES.indexOf(document.body.dataset.theme) + 1) % THEMES.length]);
 
   function startLevel(n) {
     level = n; store.set('level', n);
@@ -138,7 +142,8 @@
 
     // Taille des objets adaptée à l'écran et au nombre d'étagères
     const availH = boardEl.clientHeight || 400;
-    const size = Math.max(36, Math.min(60, Math.floor((availH / state.length - 30) * 0.85), Math.floor((Math.min(window.innerWidth, 520) - 32 - 24 - CAP * 8) / CAP)));
+    // Chaque étagère coûte ~52px (marges + tranche 3D) + l'espacement : on répartit le reste
+    const n = state.length, size = Math.max(30, Math.min(60, Math.floor((availH - 16 - n * 58) / n), Math.floor((Math.min(window.innerWidth, 520) - 32 - 28 - CAP * 8) / CAP)));
     boardEl.style.setProperty('--size', size + 'px');
 
     boardEl.innerHTML = '';
@@ -153,14 +158,16 @@
           const [color, glyph] = PALETTE[shelf[s]];
           const it = document.createElement('div');
           it.className = 'item' + (i === selected && s >= shelf.length - runLength(shelf) ? ' is-lift' : '');
-          it.style.background = color;
-          it.textContent = glyph; // symbole = accessibilité daltonisme
+          it.style.setProperty('--c', color);
+          if (pop && pop.i === i && s >= shelf.length - pop.n) it.classList.add('is-pop');
+          it.innerHTML = '<i>' + glyph + '</i>'; // symbole = accessibilité daltonisme
           slot.appendChild(it);
         }
         el.appendChild(slot);
       }
       boardEl.appendChild(el);
     });
+    pop = null;
   }
 
   function shake(i) {
@@ -180,9 +187,9 @@
     if (canMove(state, selected, i)) {
       history.push(state.map(s => s.slice()));
       const n = move(state, selected, i);
-      selected = null;
+      pop = { i, n }; selected = null;
       beep(440 + n * 80, 0.1); buzz(10);
-      render();
+      render(); burst(i);
       if (isWon(state)) win();
     } else {
       shake(i); beep(160, 0.12, 'square', 0.06);
@@ -192,7 +199,29 @@
     }
   }
 
+  // Gerbe de particules sur l'étagère cible
+  function burst(i) {
+    const el = boardEl.children[i]; if (!el) return;
+    const r = el.getBoundingClientRect(), c = getComputedStyle(el.querySelector('.item') || el).getPropertyValue('--c') || '#fff';
+    for (let k = 0; k < 14; k++) {
+      const d = document.createElement('span'); d.className = 'spark';
+      d.style.cssText = `left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;background:${c}`;
+      document.body.appendChild(d);
+      const a = Math.random() * 6.28, v = 40 + Math.random() * 70;
+      d.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: `translate(${Math.cos(a) * v}px,${Math.sin(a) * v}px) scale(0)`, opacity: 0 }], { duration: 500 + Math.random() * 300, easing: 'ease-out' }).onfinish = () => d.remove();
+    }
+  }
+  function confetti() {
+    for (let k = 0; k < 60; k++) {
+      const d = document.createElement('span'); d.className = 'confetti';
+      d.style.cssText = `left:${Math.random() * 100}vw;background:${PALETTE[k % PALETTE.length][0]}`;
+      document.body.appendChild(d);
+      d.animate([{ transform: 'translateY(-20px) rotate(0)', opacity: 1 }, { transform: `translateY(105vh) rotate(${360 + Math.random() * 540}deg)`, opacity: 1 }], { duration: 1400 + Math.random() * 1400, delay: Math.random() * 400, easing: 'ease-in' }).onfinish = () => d.remove();
+    }
+  }
+
   async function win() {
+    confetti();
     beep(660, 0.12); setTimeout(() => beep(880, 0.2), 120); buzz([20, 40, 20]);
     // Série quotidienne : +1 si on joue un nouveau jour consécutif
     const today = new Date().toDateString();
