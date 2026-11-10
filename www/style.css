@@ -5,7 +5,7 @@ body{background:var(--bg);color:var(--ink);transition:background .4s}
 .app{height:100%;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom);max-width:520px;margin:0 auto;position:relative;z-index:1}
 .top{display:flex;justify-content:space-between;gap:8px;padding:14px 0}
 .top_pill{background:var(--pill);color:var(--ink);padding:8px 16px;border-radius:999px;font:inherit;font-weight:800;border:var(--pill-border,0);box-shadow:var(--pill-shadow);backdrop-filter:blur(8px)}
-.top_btn{cursor:pointer;margin-left:auto}
+.top_btn{cursor:pointer}
 .board{flex:1;display:flex;flex-direction:column;justify-content:center;gap:var(--gap,16px);overflow:hidden;padding:8px 0;perspective:900px}
 .shelf{display:flex;justify-content:center;gap:8px;padding:12px 14px 16px;position:relative;transition:transform .18s cubic-bezier(.3,1.6,.5,1),box-shadow .2s;transform:rotateX(var(--tilt,0deg));background:var(--shelf-bg);border-radius:var(--shelf-r,18px);border-bottom:var(--shelf-edge);box-shadow:var(--shelf-shadow)}
 .shelf.is-selected{transform:rotateX(var(--tilt,0deg)) translateY(-5px) scale(1.02);box-shadow:var(--shelf-shadow),0 0 0 3px var(--sel),0 0 24px var(--sel)}
@@ -48,24 +48,45 @@ h2{margin:8px 0;font-size:26px}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @keyframes done{0%{transform:scale(1)}40%{transform:scale(1.05)}100%{transform:scale(1)}}
 
+/* ========== Accueil ========== */
+.home{position:fixed;inset:0;z-index:3;background:var(--bg);display:flex;flex-direction:column;justify-content:space-between;gap:16px;padding:calc(env(safe-area-inset-top) + 28px) 20px calc(env(safe-area-inset-bottom) + 24px);max-width:520px;margin:0 auto;overflow:auto}
+.home[hidden]{display:none}
+.home_logo{text-align:center}
+.home_logo span{display:block;font-size:64px;font-weight:900;letter-spacing:-1px;color:#fff;text-shadow:0 4px 0 var(--accent-edge),0 8px 0 rgba(0,0,0,.18),0 14px 22px rgba(0,0,0,.3);animation:idle 2.6s ease-in-out infinite}
+.home_logo small{display:block;margin-top:14px;font-weight:700;opacity:.75}
+.home_block{display:flex;flex-direction:column;gap:12px}
+.home_label{margin:0;font-weight:800;text-align:center}
+.themes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.theme_card{border:0;border-radius:20px;padding:12px 6px 10px;font:inherit;font-weight:800;font-size:13px;color:var(--ink);background:var(--bg);box-shadow:0 5px 0 rgba(0,0,0,.18),0 10px 16px rgba(0,0,0,.2);cursor:pointer;transition:transform .15s cubic-bezier(.3,1.6,.5,1);--size:30px}
+.theme_card.is-picked{transform:translateY(-6px) scale(1.06);outline:3px solid var(--accent);outline-offset:2px}
+.theme_prev{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:10px}
+.theme_prev .item{width:34px;height:34px;--depth:4px}
+.theme_prev .item i{font-size:16px}
+.modal_card-left{text-align:left}
+.muted{opacity:.75;font-size:14px;line-height:1.4}
+#socials{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.social{display:flex;justify-content:space-between;align-items:center;text-align:left}
+.social .btn_ad{margin:0}
+
 /* ========== Thème 1 : JELLY POP (bonbons, pastel, rebond) ========== */
-body[data-theme=jelly]{--bg:linear-gradient(160deg,#ffd6f0 0%,#d9c7ff 55%,#bfe3ff 100%);--ink:#4a2c6b;--pill:rgba(255,255,255,.7);--pill-shadow:0 3px 0 rgba(120,70,170,.18);
+[data-theme=jelly]{--bg:linear-gradient(160deg,#ffd6f0 0%,#d9c7ff 55%,#bfe3ff 100%);--ink:#4a2c6b;--pill:rgba(255,255,255,.7);--pill-shadow:0 3px 0 rgba(120,70,170,.18);
   --shelf-bg:linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,.45));--shelf-edge:9px solid #f4a6d7;--shelf-shadow:0 12px 18px rgba(120,70,170,.2);--sel:#ff4fa3;--done-bg:linear-gradient(#e8ffd9,#c6f5b0);--done-edge:#7bd45a;
   --btn:#fff;--btn-ink:#4a2c6b;--btn-edge:#d9b8f5;--accent:#ff4fa3;--accent-edge:#c42a78;--card:#fff;--item-r:42%;--depth:8px}
-body[data-theme=jelly] .item{background:radial-gradient(circle at 30% 22%,#fff 0,var(--hi) 12%,var(--c) 50%,var(--lo) 100%);filter:saturate(1.15)}
-body[data-theme=jelly] .item::after{content:"";position:absolute;right:16%;bottom:14%;width:14%;height:14%;border-radius:50%;background:rgba(255,255,255,.55)}
+[data-theme=jelly] .item{background:radial-gradient(circle at 30% 22%,#fff 0,var(--hi) 12%,var(--c) 50%,var(--lo) 100%);filter:saturate(1.15)}
+[data-theme=jelly] .item::after{content:"";position:absolute;right:16%;bottom:14%;width:14%;height:14%;border-radius:50%;background:rgba(255,255,255,.55)}
 
 /* ========== Thème 2 : NEON ARCADE (nuit, verre, glow) ========== */
-body[data-theme=neon]{--bg:radial-gradient(ellipse at 50% 0,#3a1b7a 0,#140a33 55%,#07031a 100%);--ink:#f3eaff;--pill:rgba(255,255,255,.08);--pill-border:1px solid rgba(255,255,255,.25);--pill-shadow:0 0 14px rgba(160,90,255,.45);
+[data-theme=neon]{--bg:radial-gradient(ellipse at 50% 0,#3a1b7a 0,#140a33 55%,#07031a 100%);--ink:#f3eaff;--pill:rgba(255,255,255,.08);--pill-border:1px solid rgba(255,255,255,.25);--pill-shadow:0 0 14px rgba(160,90,255,.45);
   --shelf-bg:linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,.03));--shelf-edge:4px solid #b266ff;--shelf-shadow:0 0 20px rgba(178,102,255,.5),0 14px 20px rgba(0,0,0,.5);--sel:#00f0ff;--done-bg:linear-gradient(rgba(0,255,170,.18),rgba(0,255,170,.05));--done-edge:#00ffaa;
   --btn:rgba(255,255,255,.1);--btn-ink:#f3eaff;--btn-edge:#5a2da8;--accent:#00d5ff;--accent-edge:#0089a8;--card:#1d0f46;--item-r:24%;--depth:6px;--tilt:8deg}
-body[data-theme=neon] .item{box-shadow:0 var(--depth) 0 var(--deep),0 0 22px var(--c),0 14px 16px rgba(0,0,0,.5),inset 0 0 12px rgba(255,255,255,.45);background:linear-gradient(135deg,var(--hi) 0,var(--c) 45%,var(--lo) 100%);border:2px solid rgba(255,255,255,.55)}
-body[data-theme=neon]::before{content:"";position:fixed;inset:auto 0 0 0;height:45%;background:linear-gradient(transparent,rgba(178,102,255,.35)),repeating-linear-gradient(90deg,rgba(178,102,255,.35) 0 1px,transparent 1px 44px),repeating-linear-gradient(0deg,rgba(178,102,255,.3) 0 1px,transparent 1px 38px);transform:perspective(380px) rotateX(58deg);transform-origin:bottom;pointer-events:none}
+[data-theme=neon] .item{box-shadow:0 var(--depth) 0 var(--deep),0 0 22px var(--c),0 14px 16px rgba(0,0,0,.5),inset 0 0 12px rgba(255,255,255,.45);background:linear-gradient(135deg,var(--hi) 0,var(--c) 45%,var(--lo) 100%);border:2px solid rgba(255,255,255,.55)}
+bodybody[data-theme=neon]::before{content:"";position:fixed;inset:auto 0 0 0;height:45%;background:linear-gradient(transparent,rgba(178,102,255,.35)),repeating-linear-gradient(90deg,rgba(178,102,255,.35) 0 1px,transparent 1px 44px),repeating-linear-gradient(0deg,rgba(178,102,255,.3) 0 1px,transparent 1px 38px);transform:perspective(380px) rotateX(58deg);transform-origin:bottom;pointer-events:none}
 
 /* ========== Thème 3 : COZY SHOP (bois, bocaux, lumière chaude) ========== */
-body[data-theme=cozy]{--bg:repeating-linear-gradient(90deg,#f6dcc0 0 38px,#f1d1b1 38px 76px);--ink:#4a2f22;--pill:#fff3e4;--pill-shadow:0 3px 0 #c9a07c;
+[data-theme=cozy]{--bg:repeating-linear-gradient(90deg,#f6dcc0 0 38px,#f1d1b1 38px 76px);--ink:#4a2f22;--pill:#fff3e4;--pill-shadow:0 3px 0 #c9a07c;
   --shelf-bg:linear-gradient(#d9ae88,#c79569);--shelf-edge:12px solid #8a5a3a;--shelf-r:6px;--shelf-shadow:0 14px 14px rgba(70,35,15,.35),inset 0 6px 8px rgba(0,0,0,.18);--sel:#ffb703;--done-bg:linear-gradient(#cde8a6,#a9d37c);--done-edge:#5e8f33;
   --btn:#fff3e4;--btn-ink:#4a2f22;--btn-edge:#c9a07c;--accent:#e76f51;--accent-edge:#a8452b;--card:#fff3e4;--item-r:20% 20% 34% 34%;--depth:5px}
-body[data-theme=cozy] .item{background:linear-gradient(90deg,var(--lo) 0,var(--c) 30%,var(--hi) 45%,var(--c) 65%,var(--lo) 100%)}
-body[data-theme=cozy] .item::before{left:auto;right:auto;top:-9%;left:18%;width:64%;height:20%;border-radius:6px 6px 2px 2px;background:linear-gradient(#f4e3c1,#c9a46a);opacity:1;transform:none;box-shadow:0 2px 0 rgba(0,0,0,.25)}
-body[data-theme=cozy]::after{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% -10%,rgba(255,236,170,.55),transparent 60%);pointer-events:none}
+[data-theme=cozy] .item{background:linear-gradient(90deg,var(--lo) 0,var(--c) 30%,var(--hi) 45%,var(--c) 65%,var(--lo) 100%)}
+[data-theme=cozy] .item::before{left:auto;right:auto;top:-9%;left:18%;width:64%;height:20%;border-radius:6px 6px 2px 2px;background:linear-gradient(#f4e3c1,#c9a46a);opacity:1;transform:none;box-shadow:0 2px 0 rgba(0,0,0,.25)}
+bodybody[data-theme=cozy]::after{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% -10%,rgba(255,236,170,.55),transparent 60%);pointer-events:none}
+#bonusClose{width:100%}

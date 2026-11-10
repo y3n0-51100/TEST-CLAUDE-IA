@@ -10,8 +10,8 @@
 <body>
 <div class="app">
   <header class="top">
+    <button class="top_pill top_btn top_btn-left" id="menu" aria-label="Menu">☰</button>
     <div class="top_pill">Niveau <b id="level">1</b></div>
-    <button class="top_pill top_btn" id="theme" aria-label="Thème">🎨</button>
     <div class="top_pill">🔥 <b id="streak">0</b></div>
   </header>
 
@@ -22,6 +22,31 @@
     <button class="btn" id="shelf">＋ Étagère <span class="btn_ad">▶ pub</span></button>
     <button class="btn btn-ghost" id="restart">⟲</button>
   </footer>
+
+  <section class="home" id="home">
+    <div class="home_logo"><span>Shelfie</span><small>Range. Trie. Savoure.</small></div>
+    <div class="home_block">
+      <p class="home_label">Choisis ton ambiance</p>
+      <div class="themes" id="themes">
+        <button class="theme_card" data-theme="jelly" data-pick="jelly"><div class="theme_prev"><div class="item" style="--c:#ff6b6b"><i>●</i></div><div class="item" style="--c:#4dabf7"><i>■</i></div><div class="item" style="--c:#fcc419"><i>★</i></div></div><b>Jelly Pop</b></button>
+        <button class="theme_card" data-theme="neon" data-pick="neon"><div class="theme_prev"><div class="item" style="--c:#cc5de8"><i>◆</i></div><div class="item" style="--c:#22b8cf"><i>✚</i></div><div class="item" style="--c:#51cf66"><i>▲</i></div></div><b>Neon Arcade</b></button>
+        <button class="theme_card" data-theme="cozy" data-pick="cozy"><div class="theme_prev"><div class="item" style="--c:#ff922b"><i>♥</i></div><div class="item" style="--c:#f06595"><i>⬟</i></div><div class="item" style="--c:#94d82d"><i>☾</i></div></div><b>Cozy Shop</b></button>
+      </div>
+    </div>
+    <div class="home_block">
+      <button class="btn btn-main" id="play">Jouer · niveau <span id="homeLevel">1</span></button>
+      <button class="btn" id="bonusOpen">🎁 Bonus <span class="btn_ad" id="bonusCount"></span></button>
+    </div>
+  </section>
+
+  <div class="modal" id="bonus" hidden>
+    <div class="modal_card modal_card-left">
+      <h2>🎁 Bonus réseaux</h2>
+      <p class="muted">Rejoins la communauté : chaque réseau offre <b>3 annulations + 1 étagère</b>, une seule fois.</p>
+      <div id="socials"></div>
+      <button class="btn" id="bonusClose">Fermer</button>
+    </div>
+  </div>
 
   <div class="modal" id="win" hidden>
     <div class="modal_card">

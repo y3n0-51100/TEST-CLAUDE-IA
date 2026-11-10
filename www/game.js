@@ -121,10 +121,19 @@
   const boardEl = $('board');
   let level = store.get('level', 1);
   let state, history, selected, extraShelfUsed, pop = null;
-  const THEMES = ['jelly', 'neon', 'cozy'];
-  const setTheme = t => { document.body.dataset.theme = t; store.set('theme', t); };
-  setTheme(new URLSearchParams(location.search).get('theme') || store.get('theme', 'jelly'));
-  $('theme').onclick = () => setTheme(THEMES[(THEMES.indexOf(document.body.dataset.theme) + 1) % THEMES.length]);
+  const setTheme = t => {
+    document.body.dataset.theme = t; store.set('theme', t);
+    document.querySelectorAll('.theme_card').forEach(c => c.classList.toggle('is-picked', c.dataset.pick === t));
+  };
+  // Bonus offerts par les réseaux (stock sauvegardé sur l'appareil)
+  const SOCIALS = [
+    { id: 'instagram', name: 'Instagram', icon: '📸', url: '' }, // ← renseigner l'URL de la page une fois créée
+    { id: 'tiktok', name: 'TikTok', icon: '🎵', url: '' },
+    { id: 'facebook', name: 'Facebook', icon: '👍', url: '' },
+  ];
+  const bonus = store.get('bonus', { undo: 0, shelf: 0 });
+  const claimed = store.get('claimed', {});
+  const saveBonus = () => { store.set('bonus', bonus); store.set('claimed', claimed); };
 
   function startLevel(n) {
     level = n; store.set('level', n);
@@ -139,6 +148,9 @@
     $('streak').textContent = store.get('streak', 0);
     $('undo').disabled = !history.length;
     $('shelf').disabled = extraShelfUsed;
+    $('undo').querySelector('.btn_ad').textContent = bonus.undo > 0 ? `× ${bonus.undo} offert${bonus.undo > 1 ? 's' : ''}` : '▶ pub';
+    $('shelf').querySelector('.btn_ad').textContent = bonus.shelf > 0 ? `× ${bonus.shelf} offerte${bonus.shelf > 1 ? 's' : ''}` : '▶ pub';
+    $('bonusCount').textContent = bonus.undo + bonus.shelf > 0 ? `${bonus.undo + bonus.shelf} en stock` : '';
 
     // Taille des objets adaptée à l'écran et au nombre d'étagères
     const availH = boardEl.clientHeight || 400;
@@ -244,12 +256,12 @@
 
   $('undo').onclick = async () => {
     if (!history.length) return;
-    if (!(await Ads.rewarded())) return; // l'annulation est offerte contre une pub vue
+    if (bonus.undo > 0) { bonus.undo--; saveBonus(); } else if (!(await Ads.rewarded())) return; // sinon : pub vue en entier
     state = history.pop(); selected = null; render();
   };
   $('shelf').onclick = async () => {
     if (extraShelfUsed) return;
-    if (!(await Ads.rewarded())) return;
+    if (bonus.shelf > 0) { bonus.shelf--; saveBonus(); } else if (!(await Ads.rewarded())) return;
     state.push([]); extraShelfUsed = true; render();
   };
   $('restart').onclick = () => startLevel(level);
@@ -263,5 +275,37 @@
   // Exposé pour les tests
   window.__shelfie = { makeLevel, solvable, canMove, move, isWon, get state() { return state; }, startLevel };
 
+  // ---------- Accueil & bonus réseaux ----------
+  function showHome() {
+    $('homeLevel').textContent = level;
+    $('bonusCount').textContent = bonus.undo + bonus.shelf > 0 ? `${bonus.undo + bonus.shelf} en stock` : '';
+    $('home').hidden = false;
+  }
+  document.querySelectorAll('.theme_card').forEach(c => c.onclick = () => { setTheme(c.dataset.pick); beep(600, 0.06); });
+  $('play').onclick = () => { $('home').hidden = true; beep(520, 0.08); };
+  $('menu').onclick = showHome;
+
+  function renderSocials() {
+    $('socials').innerHTML = '';
+    SOCIALS.forEach(s => {
+      const b = document.createElement('button');
+      b.className = 'btn social';
+      const done = claimed[s.id], off = !s.url;
+      b.disabled = done || off;
+      b.innerHTML = `<span>${s.icon} ${s.name}</span><span class="btn_ad">${done ? '✓ reçu' : off ? 'bientôt' : '+3 ↩︎ +1 étagère'}</span>`;
+      b.onclick = () => {
+        window.open(s.url, '_blank', 'noopener');
+        // On ne peut pas vérifier l'abonnement : le bonus est donné à l'ouverture de la page
+        claimed[s.id] = true; bonus.undo += 3; bonus.shelf += 1; saveBonus();
+        renderSocials(); render(); showHome();
+      };
+      $('socials').appendChild(b);
+    });
+  }
+  $('bonusOpen').onclick = () => { renderSocials(); $('bonus').hidden = false; };
+  $('bonusClose').onclick = () => { $('bonus').hidden = true; };
+
+  setTheme(store.get('theme', 'jelly'));
   startLevel(level);
+  showHome();
 })();
