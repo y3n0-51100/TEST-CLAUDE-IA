@@ -1,0 +1,5 @@
+package com.shelfie.game;
+
+import com.getcapacitor.BridgeActivity;
+
+public class MainActivity extends BridgeActivity {}

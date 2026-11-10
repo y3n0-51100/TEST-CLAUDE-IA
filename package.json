@@ -1,0 +1,29 @@
+{
+  "name": "shelfie",
+  "version": "1.0.0",
+  "description": "Shelfie - puzzle de tri",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sync": "cap sync"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/y3n0-51100/TEST-CLAUDE-IA.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/y3n0-51100/TEST-CLAUDE-IA/issues"
+  },
+  "homepage": "https://github.com/y3n0-51100/TEST-CLAUDE-IA#readme",
+  "private": "true",
+  "dependencies": {
+    "@capacitor-community/admob": "^8.3.0",
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/cli": "^8.6.0",
+    "@capacitor/core": "^8.6.0",
+    "@capacitor/ios": "^8.6.0"
+  }
+}

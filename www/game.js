@@ -2,12 +2,6 @@
 (() => {
   'use strict';
 
-  // ---------- Régie pub (stub : à remplacer par le plugin AdMob dans Capacitor) ----------
-  const Ads = {
-    rewarded: () => Promise.resolve(true), // renvoie true si le joueur a vu la pub en entier
-    interstitial: () => Promise.resolve(),
-  };
-
   // ---------- Données ----------
   const CAP = 4;
   const PALETTE = [
@@ -308,4 +302,7 @@
   setTheme(store.get('theme', 'jelly'));
   startLevel(level);
   showHome();
+  // Consentement + init pub en arrière-plan ; le lien « Confidentialité » n'apparaît que si la loi l'exige
+  Ads.init().then(() => { $('privacy').hidden = !Ads.privacyRequired; });
+  $('privacy').onclick = () => Ads.showPrivacy();
 })();
