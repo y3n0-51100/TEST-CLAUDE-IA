@@ -22,4 +22,4 @@ else                         c="\033[32m"; fi # vert
 r="\033[0m"
 
 printf "🤖 %s │ 🧠 Contexte ${c}%s %s%%${r} (%s/%s) │ ⬆️ Entrée %s │ ⬇️ Sortie %s │ 💰 \$%.2f" \
-  "$model" "$bar" "$pct" "$(fmt $((in_tok)))" "$(fmt "$size")" "$(fmt "$in_tok")" "$(fmt "$out_tok")" "$cost"
+  "$model" "$bar" "$pct" "$(fmt $(( pct * size / 100 )))" "$(fmt "$size")" "$(fmt "$in_tok")" "$(fmt "$out_tok")" "$cost"
