@@ -49,10 +49,10 @@ Google exige une adresse web publique pour la politique de confidentialité.
 5. Va dans **Settings** (onglet du dépôt) › **Pages** (menu de gauche).
 6. **Source** : *Deploy from a branch*. **Branch** : `claude/trusting-einstein-lca36v`, dossier **/docs**. Clique **Save**.
 7. Attends 2 minutes, recharge la page. Un lien apparaît. Ta politique est à :
-   `https://y3n0-51100.github.io/test-claude-ia/privacy.html`
+   `https://y3n0-51100.github.io/TEST-CLAUDE-IA/privacy.html`
 8. **Ouvre ce lien dans ton navigateur** pour vérifier que la page s'affiche, sans texte jaune. Garde ce lien : tu en auras besoin.
 
-Bonus : ton jeu est aussi jouable sur `https://y3n0-51100.github.io/test-claude-ia/play/`. C'est un lien à mettre dans tes bios Instagram et TikTok.
+Bonus : ton jeu est aussi jouable sur `https://y3n0-51100.github.io/TEST-CLAUDE-IA/play/`. C'est un lien à mettre dans tes bios Instagram et TikTok.
 
 ### A3. Créer ton compte AdMob
 1. Va sur **admob.google.com** et connecte-toi avec la Gmail dédiée.
@@ -98,7 +98,7 @@ Dans le Terminal, copie-colle ces commandes **une par une** :
 
 ```bash
 cd ~/Documents
-git clone https://github.com/y3n0-51100/test-claude-ia.git shelfie
+git clone https://github.com/y3n0-51100/TEST-CLAUDE-IA.git shelfie
 cd shelfie
 git checkout claude/trusting-einstein-lca36v
 npm install
@@ -163,7 +163,7 @@ Menu **Présence sur le Play Store › Fiche Play Store principale** :
 2. **Icône de l'application** : `assets/icon-only.png` (512×512 minimum, le 1024 est accepté, sinon redimensionne-le dans n'importe quel outil).
 3. **Image de présentation (bannière)** : `store/feature-graphic-1024x500.png`.
 4. **Captures d'écran du téléphone** : toutes les images de `store/screenshots/android/` (minimum 2, ici 5).
-5. **Catégorie** : Puzzle. **Coordonnées** : ta Gmail dédiée (et le site si tu veux : `https://y3n0-51100.github.io/test-claude-ia/play/`).
+5. **Catégorie** : Puzzle. **Coordonnées** : ta Gmail dédiée (et le site si tu veux : `https://y3n0-51100.github.io/TEST-CLAUDE-IA/play/`).
 6. **Enregistre**.
 
 ### D4. Autres rubriques à vérifier
